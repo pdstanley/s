@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>First AngularJS Application</title>
+    <script src= "angular.min.js"></script>
+    <script src= "fuse.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+<script src="jquery.min.js"></script>
+<script src="semantic/dist/semantic.min.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl" >
+    <div class="ui grid" style="margin-left:50px;margin-top:50px;">
+        <div class = "row center aligned">
+            <div class="ui selection dropdown">
+                <input type="hidden" name="gender">
+                <i class="dropdown icon"></i>
+                <div class="default text">Search Options</div>
+                <div class="menu">
+                <div class="item" data-value="1">Name</div>
+                <div class="item" data-value="0">Title</div>
+                <div class="item" data-value="0">Phone</div>
+                </div>
+            </div>
+            <div class="ui input">
+                <input type="text" ng-model="searchInput" placeholder="Search...">
+            </div>
+        </div>
+        <div class="ui button" ng-click="search(searchInput)">Search</div>
+    </div>
+    <div class="ui grid" style="margin-top:100px;margin-left:50px;width:350px;">
+        <table class="ui celled table">
+            <thead>
+              <tr><th>Search Term</th>
+              <th>Match Type</th>
+              <th>Description</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td data-label="Name"><span class="ui label">test</span></td>
+                <td data-label="Age">fuzzy search</td>
+                <td data-label="Job">search terms that contain no special information before/after are searched as fuzzy terms. This searches <span class="ui label">test</span> as a fuzzy search.</td>
+              </tr>
+              <tr>
+                <td data-label="Name">fuzzy match</td>
+                <td data-label="Age">26</td>
+                <td data-label="Job">Engineer</td>
+              </tr>
+              <tr>
+                <td data-label="Name"></td>
+                <td data-label="Age">24</td>
+                <td data-label="Job">Designer</td>
+              </tr>
+            </tbody>
+            <div class="ui segment" ng-if="searchResult" ng-repeat="result in searchResult">
+                {{result}}
+            </div>
+          </table>
+    </div>
+
+    <script>
+
+        $('.ui.dropdown').dropdown();
+
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope) {
+            $scope.search = function(input) {
+                console.log(input);
+                const fuse = new Fuse(list, options);
+                const pattern = "'9047038995 | '9047038996"
+                console.log(fuse.search(input));
+                $scope.searchResult = fuse.search(input);
+            }
+        });
+
+        const options = {
+            isCaseSensitive: false,
+            includeScore: true,
+            shouldSort: true,
+            includeMatches: false,
+            findAllMatches: false,
+            minMatchCharLength: 2,
+            location: 0,
+            threshold: 0.6,
+            distance: 100,
+            useExtendedSearch: true,
+            ignoreLocation: false,
+            ignoreFieldNorm: false,
+        keys: [
+            "title",
+            "phone",
+            "author.firstName",
+            "author.lastName"
+        ]
+        };
+
+
+
+        /////////////// DATA ////////////////
+
+        var list = [
+            {
+                "title": "Old Man's War",
+                "phone" :"9047038995",
+                "author": {
+                "firstName": "John",
+                "lastName": "Scalzi"
+                }
+            },
+            {
+                "title": "The Lock Artist",
+                "phone": "9047038996",
+                "author": {
+                "firstName": "Steve",
+                "lastName": "Hamilton"
+                }
+            },
+            {
+                "title": "HTML5",
+                "phone": "9047038997",
+                "author": {
+                "firstName": "Remy",
+                "lastName": "Sharp"
+                }
+            },
+            {
+                "title": "Right Ho Jeeves",
+                "author": {
+                "firstName": "P.D",
+                "lastName": "Woodhouse"
+                }
+            },
+            {
+                "title": "The Code of the Wooster",
+                "author": {
+                "firstName": "P.D",
+                "lastName": "Woodhouse"
+                }
+            },
+            {
+                "title": "Thank You Jeeves",
+                "author": {
+                "firstName": "P.D",
+                "lastName": "Woodhouse"
+                }
+            },
+            {
+                "title": "The DaVinci Code",
+                "author": {
+                "firstName": "Dan",
+                "lastName": "Brown"
+                }
+            },
+            {
+                "title": "Angels & Demons",
+                "author": {
+                "firstName": "Dan",
+                "lastName": "Brown"
+                }
+            },
+            {
+                "title": "The Silmarillion",
+                "author": {
+                "firstName": "J.R.R",
+                "lastName": "Tolkien"
+                }
+            },
+            {
+                "title": "Syrup",
+                "author": {
+                "firstName": "Max",
+                "lastName": "Barry"
+                }
+            },
+            {
+                "title": "The Lost Symbol",
+                "author": {
+                "firstName": "Dan",
+                "lastName": "Brown"
+                }
+            },
+            {
+                "title": "The Book of Lies",
+                "author": {
+                "firstName": "Brad",
+                "lastName": "Meltzer"
+                }
+            },
+            {
+                "title": "Lamb",
+                "author": {
+                "firstName": "Christopher",
+                "lastName": "Moore"
+                }
+            },
+            {
+                "title": "Fool",
+                "author": {
+                "firstName": "Christopher",
+                "lastName": "Moore"
+                }
+            },
+            {
+                "title": "Incompetence",
+                "author": {
+                "firstName": "Rob",
+                "lastName": "Grant"
+                }
+            },
+            {
+                "title": "Fat",
+                "author": {
+                "firstName": "Rob",
+                "lastName": "Grant"
+                }
+            },
+            {
+                "title": "Colony",
+                "author": {
+                "firstName": "Rob",
+                "lastName": "Grant"
+                }
+            },
+            {
+                "title": "Backwards, Red Dwarf",
+                "author": {
+                "firstName": "Rob",
+                "lastName": "Grant"
+                }
+            },
+            {
+                "title": "The Grand Design",
+                "author": {
+                "firstName": "Stephen",
+                "lastName": "Hawking"
+                }
+            },
+            {
+                "title": "The Book of Samson",
+                "author": {
+                "firstName": "David",
+                "lastName": "Maine"
+                }
+            },
+            {
+                "title": "The Preservationist",
+                "author": {
+                "firstName": "David",
+                "lastName": "Maine"
+                }
+            },
+            {
+                "title": "Fallen",
+                "author": {
+                "firstName": "David",
+                "lastName": "Maine"
+                }
+            },
+            {
+                "title": "Monster 1959",
+                "author": {
+                "firstName": "David",
+                "lastName": "Maine"
+                }
+            }
+            ];
+
+
+        </script>
+    <!-- Enter Numbers to Multiply: 
+    <input type="text" ng-model="Num1" /> x <input type="text" ng-model="Num2" /> 
+    = <span>{{Num1 * Num2}}</span>   -->
+</body>
+</html>
